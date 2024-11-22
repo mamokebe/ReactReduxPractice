@@ -1,0 +1,42 @@
+import axios from "axios";
+import {
+  FETCH_USERS_REQUEST,
+  FETCH_USERS_SUCCESS,
+  FETCH_USERS_FAILURE,
+} from "./userTypes";
+
+export const fetchUserRequest = () => {
+  return {
+    type: FETCH_USERS_REQUEST,
+  };
+};
+const fetchUserSuccess = (users) => {
+  return {
+    type: FETCH_USERS_SUCCESS,
+    payload: users,
+  };
+};
+const fetchUserFailure = (error) => {
+  return {
+    type: FETCH_USERS_FAILURE,
+    payload: error,
+  };
+};
+export const fetchUsers = () => {
+  return (dispatch) => {
+    dispatch(fetchUserRequest);
+    axios
+      .get("https://jsonplaceholder.typicode.com/users")
+      .then((response) => {
+        //response.data is the array of users
+        const users = response?.data?.map((user) => user.id);
+        dispatch(fetchUserSuccess(users));
+      })
+      .catch((error) => {
+        //error.message is the error description
+        console.log(error);
+        const errorMsg = error.message;
+        dispatch(fetchUserFailure(errorMsg));
+      });
+  };
+};
