@@ -29,12 +29,12 @@ export const fetchUsers = () => {
       .get("https://jsonplaceholder.typicode.com/users")
       .then((response) => {
         //response.data is the array of users
-        const users = response?.data?.map((user) => user.id);
+        const users = response?.data;
         dispatch(fetchUserSuccess(users));
       })
       .catch((error) => {
         //error.message is the error description
-        console.log(error);
+        // console.log(error);
         const errorMsg = error.message;
         dispatch(fetchUserFailure(errorMsg));
       });
